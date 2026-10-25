@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Zodiac-detector/framework.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: "Cairo", sans-serif;
+        }
+        body{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            background: linear-gradient(135deg, #0B1026, #1A103D, #2E1F63);
+        }
+        .container{
+            width: 350px;
+            height: 505px;
+            background: rgba(255, 255, 255, 0.08);
+            margin-top: 100px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        input{
+            background: rgba(28, 37, 82, 0.6);
+            color: #F5F7FA;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            padding: 12px 16px;
+            width: 300px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        #zodiac{
+            width: 300px;
+            height: 170px;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            color: #F5F7FA;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+            margin-top: 8px;
+            padding: 15px;
+            direction: rtl;
+            line-height: 40px;
+        }
+        #btn{
+            padding: 5px 20px;
+            align-self: flex-start;
+            margin: 10px;
+            cursor: pointer;
+            background: rgba(28, 37, 82, 0.6);
+            backdrop-filter: blur(10px);
+            color: #F5F7FA;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            transition: .3s;
+            font-size: 16px;
+        }
+        #btn:hover{
+            background: rgb(28, 37, 82);
+        }
+        #rest{
+            padding: 5px 20px;
+            align-self: flex-start;
+            margin: 10px;
+            cursor: pointer;
+            background: rgba(28, 37, 82, 0.6);
+            backdrop-filter: blur(10px);
+            color: #F5F7FA;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            transition: .3s;
+            margin-left: 40px;
+            font-size: 16px;
+        }
+        #rest:hover{
+            background: rgb(28, 37, 82);
+        }
+        h2{
+            color: white;
+            margin-top: 10px;
+            /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>اعرف برجك</h2>
+        <input id="day" type="number" placeholder="enter your day">
+        <input id="month" type="text" placeholder="enter your month" list="group">
+        <datalist id="group">
+        </datalist>
+        <div class="d-flex justify-sb">
+            <button id="btn">send</button>
+            <button id="rest">reset</button>
+        </div>
+        <div id="zodiac"></div>
+        
+    </div>
+    
+    <script>
+        let zodiac = document.getElementById('zodiac')
+        let day = document.getElementById('day');
+        let month = document.getElementById('month');
+        let btn = document.getElementById('btn');
+        let reset = document.getElementById('rest');
+        let container = document.querySelector('.container');
+        
+        window.onload = function(){
+            localStorage.day = '';
+            localStorage.month = '';
+            container.style.height = '';
+            zodiac.style.height = '';
+        }
+        day.oninput = function(){
+            let theday = day.value;
+            localStorage.day = theday;
+            zodiac.innerHTML = '';
+            container.style.height = '';
+            zodiac.style.height = '';
+        }
+        
+        month.onkeyup = function(){
+            let themonth = month.value;
+            localStorage.month = themonth;
+            zodiac.innerHTML = '';
+            container.style.height = '';
+            zodiac.style.height = '';
+        }
+        
+
+        btn.onclick = function(){
+            GetZodiac(localStorage.day,localStorage.month.toLowerCase());
+
+        }
+        reset.onclick = function(){
+            localStorage.day = '';
+            localStorage.month = '';
+            day.value = '';
+            month.value = '';
+            zodiac.innerHTML = '';
+            container.style.height = '';
+            zodiac.style.height = '';
+        }
+        let group = document.getElementById('group');
+        let months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        for(let i = 0 ; i < 12 ; i++){
+            group.innerHTML += `<option value = '${months[i]}'>`
+        }
+        function GetZodiac(day,month){
+            if(((day >=21 && day <= 31) && (month == 'مارس' || month == 'march' || month == 3)) || ((day <= 19 && day > 0) && (month == 'ابريل' ||  month == 'أبريل' || month == 'april' || month == 4)) ){
+                zodiac.innerHTML = `برج الحمل   ♈<br> ويبدأ هذا البرج من 21 مارس الي 19 ابريل <br> - ابرز مميزاته :  الشجاعة والقيادة <br> - ابرز عيوبه : التسرع والاندفاع`
+            }
+            else if(((day >= 20 && day <= 30) && (month == 'ابريل' || month == 'أبريل' || month == 'april' || month == 4))|| ((day <= 20 && day > 0) && (month == 'مايو' || month == 'may' || month == 5))){
+                zodiac.innerHTML = `برج الثور   ♉<br> ويبدأ هذا البرج من 20 ابريل الي 20 مايو <br> - ابرز مميزاته : الصبر والثبات <br> - ابرز عيوبه : العناد`
+            }
+            else if(((day >= 21 && day <= 31) && (month == 'مايو' || month == 'may' || month == 5))|| ((day <= 20 && day > 0) && (month == 'يونيو' || month == 'june' || month == 6))){
+                zodiac.innerHTML = `برج الجوزاء   ♊<br> ويبدأ هذا البرج من 21 مايو الي 20 يونيو <br> - ابرز مميزاته : الذكاء وسرعة البديهه <br> - ابرز عيوبه : التقلب وعدم الاستقرار `
+            }
+            else if(((day >= 21 && day <= 30) && (month == 'يونيو' || month == 'june' || month == 6))|| ((day <= 22 && day > 0) && (month == 'يوليو' || month == 'july' || month == 7))){
+                zodiac.innerHTML = `برج السرطان   ♋<br> ويبدأ هذا البرج من 21 يونيو الي 22 يوليو <br> - ابرز مميزاته : الحنان والوفاء<br> - ابرز عيوبه : الحساسية الزائدة`
+            }
+            else if(((day >= 23 && day <= 31) && (month == 'يوليو' || month == 'july' || month == 7))|| ((day <= 22 && day > 0) && (month == 'اغسطس' || month == 'أغسطس' || month == 'august' || month == 8))){
+                zodiac.innerHTML = `برج الاسد   ♌<br> ويبدأ هذا البرج من 23 يوليو الي 22 اغسطس <br> - ابرز مميزاته : الكاريزما والثقة بالنفس<br> - ابرز عيوبه : حب الظهور والغرور أحيانًا`
+            }
+            else if(((day >= 23 && day <= 31) && (month == 'اغسطس' || month == 'أغسطس' || month == 'august' || month == 8))|| ((day <= 22 && day > 0) && (month == 'سبتمبر' || month == 'september' || month == 9))){
+                zodiac.innerHTML = `برج العذراء   ♍<br> ويبدأ هذا البرج من 23 اغسطس الي 22 سبتمبر <br> - ابرز مميزاته : الدقة والتنظيم<br> - ابرز عيوبه : كثرة الانتقاد`
+            }
+            else if(((day >= 23 && day <= 30) && (month == 'سبتمبر' || month == 'september' || month == 9))|| ((day <= 22 && day > 0) && (month == 'اكتوبر' || month == 'أكتوبر' || month == 'october' || month == 10))){
+                zodiac.innerHTML = `برج الميزان   ♎<br> ويبدأ هذا البرج من 23 سبتمبر الي 22 اكتوبر <br> - ابرز مميزاته : الدبلوماسية والعدل<br> - ابرز عيوبه : التردد`
+            }
+            else if(((day >= 23 && day <= 31) && (month == 'اكتوبر' || month == 'أكتوبر' || month == 'october' || month == 10))|| ((day <= 21 && day > 0) && (month == 'نوفمبر' || month == 'november' || month == 11))){
+                zodiac.innerHTML = `برج العقرب   ♏<br> ويبدأ هذا البرج من 23 اكتوبر الي 21 نوفمبر <br> - ابرز مميزاته : الإصرار والولاء<br> - ابرز عيوبه : الغيرة وحب السيطرة`
+            }
+            else if(((day >= 22 && day <= 30) && (month == 'نوفمبر' ||  month == 'november' || month == 11))|| ((day <= 21 && day > 0) && (month == 'ديسمبر' || month == 'december' || month == 12))){
+                zodiac.innerHTML = `برج القوس   ♐<br> ويبدأ هذا البرج من 22 نوفمبر الي 21 ديسمبر <br> - ابرز مميزاته : التفاؤل وحب المغامرة<br> - ابرز عيوبه : الصراحة الجارحة`
+            }
+            else if(((day >= 22 && day <= 31) && (month == 'ديسمبر' || month == 'december' || month == 12))|| ((day <= 19 && day > 0) && (month == 'يناير' || month == 'january' || month == 1))){
+                zodiac.innerHTML = `برج الجدي   ♑<br> ويبدأ هذا البرج من 22 ديسمبر الي 19 يناير <br> - ابرز مميزاته : الطموح والانضباط<br> - ابرز عيوبه : الجدية الزائدة أو التشدد`
+            }
+            else if(((day >= 20 && day <= 31) && (month == 'يناير' || month == 'january' || month == 1))|| ((day <= 18 && day > 0) && (month == 'فبراير' || month == 'february' || month == 2))){
+                zodiac.innerHTML = `برج الدلو   ♒<br> ويبدأ هذا البرج من 20 يناير الي 18 فبراير <br> - ابرز مميزاته : الإبداع والاستقلالية<br> - ابرز عيوبه : البرود العاطفي`
+            }
+            else if(((day >= 19 && day <= 28) && (month == 'فبراير' || month == 'february' || month == 2))|| ((day <= 20 && day > 0) && (month == 'مارس' || month == 'march' || month == 3))){
+                zodiac.innerHTML = `برج الحوت   ♓<br> ويبدأ هذا البرج من 19 فبراير الي 20 مارس <br> - ابرز مميزاته : التعاطف والخيال الواسع<br> - ابرز عيوبه : الهروب من الواقع أو التردد`
+            }
+            else if(((day == 29) && (month == 'فبراير' || month == 'february' || month == 2))){
+                zodiac.innerHTML = `برج الحوت   ♓<br> ويبدأ هذا البرج من 19 فبراير الي 20 مارس <br> - ابرز مميزاته : التعاطف والخيال الواسع<br> - ابرز عيوبه : الهروب من الواقع أو التردد <br> ملحوظه : شهر فبراير 28 يوم ويصبح 29 يوم كل 4 سنوات وتسمي بالسنه الكبيسه`;
+                container.style.height = '565px';
+                zodiac.style.height = '230px';
+            }
+            else{
+                zodiac.innerHTML = `ادخل بيانات صحيحه`
+            }
+
+        }
+        
+    </script>
+</body>
+</html>
